@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="SwingBean Wizards"
+            id="SwingBeanPlugin">
+      </category>
+      <wizard
+            name="SwingBean Descriptor"
+            icon="icons/sample.gif"
+            category="SwingBeanPlugin"
+            class="org.swingbean.plugin.ui.SwingBeanWizard"
+            id="org.swingbean.plugin.ui.SwingBeanWizard">
+      </wizard>
+   </extension>
+
+</plugin>
