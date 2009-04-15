@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.swingbean.plugin.model.Descriptor;
 
@@ -57,6 +58,8 @@ public class SwingBeanWizardPage extends WizardPage {
 		container.setLayout(layout);
 		layout.numColumns = 3;
 		layout.verticalSpacing = 9;
+
+		// Container
 		Label label = new Label(container, SWT.NULL);
 		label.setText("&Container:");
 
@@ -76,6 +79,8 @@ public class SwingBeanWizardPage extends WizardPage {
 				handleBrowse();
 			}
 		});
+
+		// File name
 		label = new Label(container, SWT.NULL);
 		label.setText("&File name:");
 
@@ -87,6 +92,8 @@ public class SwingBeanWizardPage extends WizardPage {
 				dialogChanged();
 			}
 		});
+
+
 		initialize();
 		dialogChanged();
 		setControl(container);

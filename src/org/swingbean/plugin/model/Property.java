@@ -14,7 +14,7 @@ public abstract class Property {
 	private String label;
 
 	@XmlAttribute
-	private String type;
+	private PropertyType type;
 
 	@XmlAttribute
 	private Integer colspan;
@@ -43,11 +43,11 @@ public abstract class Property {
 		this.label = label;
 	}
 
-	public String getType() {
+	public PropertyType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(PropertyType type) {
 		this.type = type;
 	}
 
