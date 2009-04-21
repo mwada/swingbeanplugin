@@ -10,6 +10,13 @@ public class DependentComboProperty  extends Property {
 	@XmlAttribute
 	private String dependentProperty;
 
+	public DependentComboProperty(){
+	}
+
+	public DependentComboProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public String getComboModelClass() {
 		return comboModelClass;
 	}

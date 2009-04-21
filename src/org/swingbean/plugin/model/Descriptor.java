@@ -27,4 +27,8 @@ public class Descriptor {
 		return lines;
 	}
 
+	public void clearLines() {
+		lines.clear();
+	}
+
 }

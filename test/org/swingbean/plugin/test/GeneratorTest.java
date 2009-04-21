@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.swingbean.plugin.model.ComboProperty;
 import org.swingbean.plugin.model.Descriptor;
 import org.swingbean.plugin.model.Line;
+import org.swingbean.plugin.model.PropertyFactory;
 import org.swingbean.plugin.model.PropertyType;
 import org.swingbean.plugin.model.TextProperty;
 
@@ -23,14 +24,12 @@ public class GeneratorTest {
 
 		Descriptor descriptor = new Descriptor();
 		Line line = new Line();
-		TextProperty property = new TextProperty();
-		property.setType(PropertyType.TEXT);
+		TextProperty property = (TextProperty) PropertyFactory.getProperty("nome1", PropertyType.TEXT);
 		property.setFormatExample("sdfsdf");
 		property.setColspan(2);
 		line.addProperty(property);
 
-		ComboProperty property2 = new ComboProperty();
-		property2.setName("teste");
+		ComboProperty property2 = (ComboProperty) PropertyFactory.getProperty("nome2", PropertyType.COMBO);
 		line.addProperty(property2);
 
 		descriptor.addLine(line);

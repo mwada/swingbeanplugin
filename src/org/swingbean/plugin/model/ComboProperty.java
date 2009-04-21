@@ -13,6 +13,13 @@ public class ComboProperty extends Property {
 	@XmlAttribute
 	private String comboModelClass;
 
+	public ComboProperty(){
+	}
+
+	public ComboProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public Boolean getThreadLoading() {
 		return threadLoading;
 	}

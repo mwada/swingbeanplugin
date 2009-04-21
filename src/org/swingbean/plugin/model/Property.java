@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class Property {
+public class Property {
 
 	@XmlAttribute
 	private String name;
@@ -31,8 +31,9 @@ public abstract class Property {
 	public Property(){
 	}
 
-	public Property(String name){
+	public Property(String name, PropertyType type){
 		this.name = name;
+		this.type = type;
 	}
 
 	public String getLabel() {
@@ -45,10 +46,6 @@ public abstract class Property {
 
 	public PropertyType getType() {
 		return type;
-	}
-
-	public void setType(PropertyType type) {
-		this.type = type;
 	}
 
 	public Integer getColspan() {
@@ -81,10 +78,6 @@ public abstract class Property {
 
 	public void setMandatory(Boolean mandatory) {
 		this.mandatory = mandatory;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getName() {

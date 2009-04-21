@@ -21,6 +21,13 @@ public class TreeProperty extends Property {
 	@XmlJavaTypeAdapter(value=ArrayTypeAdapter.class)
 	private String[] classifyBy;
 
+	public TreeProperty(){
+	}
+
+	public TreeProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public String getRootName() {
 		return rootName;
 	}

@@ -10,6 +10,13 @@ public class NumberProperty extends Property {
 	@XmlAttribute
 	private Integer min;
 
+	public NumberProperty(){
+	}
+
+	public NumberProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public Integer getMax() {
 		return max;
 	}

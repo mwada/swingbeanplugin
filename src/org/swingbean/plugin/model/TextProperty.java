@@ -22,6 +22,13 @@ public class TextProperty extends Property {
 	@XmlAttribute
 	private String formatExample;
 
+	public TextProperty(){
+	}
+
+	public TextProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public Integer getSize() {
 		return size;
 	}

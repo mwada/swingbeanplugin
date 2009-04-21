@@ -3,18 +3,26 @@
 <plugin>
 
    <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            name="SwingBean Wizards"
-            id="SwingBeanPlugin">
-      </category>
-      <wizard
-            name="SwingBean Descriptor"
-            icon="icons/sample.gif"
-            category="SwingBeanPlugin"
-            class="org.swingbean.plugin.ui.SwingBeanWizard"
-            id="org.swingbean.plugin.ui.SwingBeanWizard">
-      </wizard>
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="SwingBeanPlugin.contribution1"
+            objectClass="org.eclipse.jdt.core.ICompilationUnit">
+         <menu
+               label="SwingBean Descriptor"
+               path="additions"
+               id="SwingBeanPlugin.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+	           id="SwingBeanPlugin.SwingBeanAction"
+               label="Create Descriptor..."
+               menubarPath="SwingBeanPlugin.menu1/group1"
+               class="org.swingbean.plugin.popup.actions.SwingBeanAction"
+               enablesFor="1">
+         </action>
+      </objectContribution>
    </extension>
 
 </plugin>

@@ -13,6 +13,13 @@ public class ImageProperty extends Property {
 	@XmlAttribute
 	private Boolean saveResolution;
 
+	public ImageProperty(){
+	}
+
+	public ImageProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public Boolean getShowResolution() {
 		return showResolution;
 	}

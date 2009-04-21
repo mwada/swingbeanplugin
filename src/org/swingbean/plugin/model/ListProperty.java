@@ -27,6 +27,13 @@ public class ListProperty extends Property {
 	@XmlAttribute
 	private Integer maxSelected;
 
+	public ListProperty(){
+	}
+
+	public ListProperty(String name, PropertyType type){
+		super(name, type);
+	}
+
 	public Boolean getThreadLoading() {
 		return threadLoading;
 	}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <beanDescriptor>
     <line>
-        <property formatExample="sdfsdf" colspan="2" type="TEXT"/>
-        <property name="teste"/>
+        <property formatExample="sdfsdf" colspan="2" type="TEXT" name="nome1"/>
+        <property type="COMBO" name="nome2"/>
     </line>
 </beanDescriptor>
