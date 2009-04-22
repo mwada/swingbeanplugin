@@ -13,6 +13,10 @@ public class ComboProperty extends Property {
 	@XmlAttribute
 	private String comboModelClass;
 
+	private String[] comboModelMethod;
+	private String parameter;
+
+
 	public ComboProperty(){
 	}
 
@@ -50,6 +54,4 @@ public class ComboProperty extends Property {
 	public void setParameter(String parameter) {
 		this.parameter = parameter;
 	}
-	private String[] comboModelMethod;
-	private String parameter;
 }

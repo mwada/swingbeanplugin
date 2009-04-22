@@ -9,22 +9,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.swingbean.plugin.model.Property;
+import org.swingbean.plugin.model.TextProperty;
 
 public class TextPropertyDialog extends PropertyDialog{
+
+	private Text size;
+	private Text minSize;
+	private Text pattern;
+	private Text mask;
+	private Text formatExample;
 
 	protected TextPropertyDialog(Shell parentShell, Property property) {
 		super(parentShell, property);
 	}
-
-	private Text size;
-
-	private Text minSize;
-
-	private Text pattern;
-
-	private Text mask;
-
-	private Text formatExample;
 
 	/**
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(Composite)
@@ -41,7 +38,7 @@ public class TextPropertyDialog extends PropertyDialog{
 	    size.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 	    label = new Label(panel, SWT.NONE);
-	    label.setText("MinSize");
+	    label.setText("Min Size");
 	    minSize = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    minSize.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -60,6 +57,21 @@ public class TextPropertyDialog extends PropertyDialog{
 	    formatExample = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    formatExample.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	    return result;
-
 	  }
+
+	  protected void fillProperty(){
+		  super.fillProperty();
+		TextProperty textProperty = (TextProperty) this.property;
+		if (checkValid(size))
+			textProperty.setSize(Integer.getInteger(size.getText()));
+		if (checkValid(minSize))
+			textProperty.setMinSize(Integer.getInteger(minSize.getText()));
+		if (checkValid(pattern))
+			textProperty.setPattern(pattern.getText());
+		if (checkValid(mask))
+			textProperty.setMask(mask.getText());
+		if (checkValid(formatExample))
+			textProperty.setFormatExample(formatExample.getText());
+ 	  }
+
 }

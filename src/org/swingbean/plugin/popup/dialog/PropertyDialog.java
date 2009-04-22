@@ -14,13 +14,13 @@ import org.swingbean.plugin.model.Property;
 
 public class PropertyDialog extends Dialog{
 
-	private Property property;
+	protected Property property;
 
-	private Text textLabel;
-	private Text textColspan;
-	private Text textColumnSize;
-	private Combo comboReadOnly;
-	private Combo comboMandatory;
+	protected Text textLabel;
+	protected Text textColspan;
+	protected Text textColumnSize;
+	protected Combo comboReadOnly;
+	protected Combo comboMandatory;
 
 	final static String[] booleans = {"true", "false"};
 
@@ -40,19 +40,6 @@ public class PropertyDialog extends Dialog{
 	protected void okPressed() {
 		fillProperty();
 		super.okPressed();
-	}
-
-	protected void fillProperty(){
-		if (checkValid(textLabel))
-			property.setLabel(textLabel.getText());
-		if (checkValid(textColspan))
-			property.setColspan(Integer.getInteger(textColspan.getText()));
-		if (checkValid(textColumnSize))
-			property.setColumnSize(Integer.getInteger(textColumnSize.getText()));
-		if (checkValid(comboReadOnly))
-			property.setReadOnly(Boolean.getBoolean(comboReadOnly.getText()));
-		if (checkValid(comboMandatory))
-			property.setMandatory(Boolean.getBoolean(comboMandatory.getText()));
 	}
 
 	/*
@@ -131,11 +118,11 @@ public class PropertyDialog extends Dialog{
 	    }*/
 	  }
 
-	  private boolean checkValid(Text text){
+	  protected boolean checkValid(Text text){
 		  return text!=null && text.getText().trim().length() > 0;
 	  }
 
-	  private boolean checkValid(Combo combo){
+	  protected boolean checkValid(Combo combo){
 		  return combo!=null && combo.getText().trim().length() > 0;
 	  }
 
@@ -146,12 +133,25 @@ public class PropertyDialog extends Dialog{
 	  }
 
 
-		public Property getProperty() {
+	public Property getProperty() {
 		return property;
 	}
 
 	public void setProperty(Property property) {
 		this.property = property;
+	}
+
+	protected void fillProperty(){
+		if (checkValid(textLabel))
+			property.setLabel(textLabel.getText());
+		if (checkValid(textColspan))
+			property.setColspan(Integer.getInteger(textColspan.getText()));
+		if (checkValid(textColumnSize))
+			property.setColumnSize(Integer.getInteger(textColumnSize.getText()));
+		if (checkValid(comboReadOnly))
+			property.setReadOnly(Boolean.getBoolean(comboReadOnly.getText()));
+		if (checkValid(comboMandatory))
+			property.setMandatory(Boolean.getBoolean(comboMandatory.getText()));
 	}
 
 

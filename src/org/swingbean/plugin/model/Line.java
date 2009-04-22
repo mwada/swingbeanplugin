@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlElements;
 public class Line {
 
 	@XmlElements({
+        @XmlElement(name = "property", type = Property.class),
         @XmlElement(name = "property", type = ComboProperty.class),
         @XmlElement(name = "property", type = DependentComboProperty.class),
         @XmlElement(name = "property", type = ImageProperty.class),

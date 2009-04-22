@@ -3,8 +3,10 @@ package org.swingbean.plugin.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"name", "type"})
 public class Property {
 
 	@XmlAttribute

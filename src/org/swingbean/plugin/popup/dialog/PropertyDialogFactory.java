@@ -10,23 +10,29 @@ public class PropertyDialogFactory {
 			case TEXT:
 			case LARGE_TEXT:
 			case PASSWORD:
-				new TextPropertyDialog(parentShell, property);
+				return new TextPropertyDialog(parentShell, property);
 
 			case COMBO:
+				return new ComboPropertyDialog(parentShell, property);
 
 			case DEPENDENT_COMBO:
+				return new DependentComboPropertyDialog(parentShell, property);
 
 			case IMAGE:
+				return new ImagePropertyDialog(parentShell, property);
 
 			case INTEGER:
 			case LONG:
 			case FLOAT:
 			case DOUBLE:
+				return new NumberPropertyDialog(parentShell, property);
 
 			case MULTIPLE_LIST:
 			case CHECKBOX_LIST:
+				return new ListPropertyDialog(parentShell, property);
 
 			case TREE:
+				return new TreePropertyDialog(parentShell, property);
 
 			case DATE:
 			case BOOLEAN:
