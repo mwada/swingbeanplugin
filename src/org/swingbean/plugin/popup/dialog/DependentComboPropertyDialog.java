@@ -39,6 +39,8 @@ public class DependentComboPropertyDialog extends PropertyDialog{
 	    dependentProperty = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    dependentProperty.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+	    initWidgetValues();
+
 	    return result;
 
 	  }
@@ -46,9 +48,9 @@ public class DependentComboPropertyDialog extends PropertyDialog{
 	protected void fillProperty(){
 		super.fillProperty();
 		DependentComboProperty dependentComboProperty = (DependentComboProperty) this.property;
-		if (checkValid(dependentProperty))
+		if (notEmpty(dependentProperty))
 			dependentComboProperty.setDependentProperty(dependentProperty.getText());
-		if (checkValid(comboModelClass))
+		if (notEmpty(comboModelClass))
 			dependentComboProperty.setComboModelClass(comboModelClass.getText());
 	}
 

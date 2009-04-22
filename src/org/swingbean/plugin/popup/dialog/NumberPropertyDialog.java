@@ -33,11 +33,15 @@ public class NumberPropertyDialog extends PropertyDialog{
 	    label.setText("Max");
 	    max = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    max.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    max.addModifyListener(new IntegerListener());
 
 	    label = new Label(panel, SWT.NONE);
 	    label.setText("Min");
 	    min = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    min.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    max.addModifyListener(new IntegerListener());
+
+	    initWidgetValues();
 
 	    return result;
 
@@ -47,10 +51,11 @@ public class NumberPropertyDialog extends PropertyDialog{
 		super.fillProperty();
 		NumberProperty numberProperty = (NumberProperty) this.property;
 
-		if (checkValid(min))
-			numberProperty.setMin(Integer.getInteger(min.getText()));
-		if (checkValid(max))
-			numberProperty.setMax(Integer.getInteger(max.getText()));
+		if (notEmpty(min))
+			numberProperty.setMin(Integer.parseInt(min.getText()));
+		if (notEmpty(max))
+			numberProperty.setMax(Integer.parseInt(max.getText()));
 	}
+
 
 }

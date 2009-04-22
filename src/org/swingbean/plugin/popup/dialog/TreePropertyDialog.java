@@ -56,6 +56,9 @@ public class TreePropertyDialog extends PropertyDialog{
 	    label.setText("Classify By");
 	    classifyBy = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    classifyBy.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+	    initWidgetValues();
+
 	    return result;
 
 	  }
@@ -63,13 +66,13 @@ public class TreePropertyDialog extends PropertyDialog{
 	  protected void fillProperty(){
 		  super.fillProperty();
 		TreeProperty treeProperty = (TreeProperty) this.property;
-		if (checkValid(rootName))
+		if (notEmpty(rootName))
 			treeProperty.setRootName(rootName.getText());
-		if (checkValid(idProperty))
+		if (notEmpty(idProperty))
 			treeProperty.setIdProperty(idProperty.getText());
-		if (checkValid(parentProperty))
+		if (notEmpty(parentProperty))
 			treeProperty.setParentProperty(parentProperty.getText());
-		if (checkValid(childrenProperty))
+		if (notEmpty(childrenProperty))
 			treeProperty.setChildrenProperty(childrenProperty.getText());
 		//if (checkValid(classifyBy))
 		//	treeProperty.setClassifyBy(classifyBy.getText());

@@ -36,11 +36,13 @@ public class TextPropertyDialog extends PropertyDialog{
 	    label.setText("Size");
 	    size = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    size.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    size.addModifyListener(new IntegerListener());
 
 	    label = new Label(panel, SWT.NONE);
 	    label.setText("Min Size");
 	    minSize = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    minSize.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    size.addModifyListener(new IntegerListener());
 
 	    label = new Label(panel, SWT.NONE);
 	    label.setText("Pattern");
@@ -56,22 +58,26 @@ public class TextPropertyDialog extends PropertyDialog{
 	    label.setText("Format Example");
 	    formatExample = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    formatExample.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+	    initWidgetValues();
+
 	    return result;
 	  }
 
 	  protected void fillProperty(){
 		  super.fillProperty();
 		TextProperty textProperty = (TextProperty) this.property;
-		if (checkValid(size))
-			textProperty.setSize(Integer.getInteger(size.getText()));
-		if (checkValid(minSize))
-			textProperty.setMinSize(Integer.getInteger(minSize.getText()));
-		if (checkValid(pattern))
+		if (notEmpty(size))
+			textProperty.setSize(Integer.parseInt(size.getText()));
+		if (notEmpty(minSize))
+			textProperty.setMinSize(Integer.parseInt(minSize.getText()));
+		if (notEmpty(pattern))
 			textProperty.setPattern(pattern.getText());
-		if (checkValid(mask))
+		if (notEmpty(mask))
 			textProperty.setMask(mask.getText());
-		if (checkValid(formatExample))
+		if (notEmpty(formatExample))
 			textProperty.setFormatExample(formatExample.getText());
  	  }
+
 
 }

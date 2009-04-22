@@ -47,6 +47,8 @@ public class ComboPropertyDialog extends PropertyDialog{
 	    comboModelClass = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    comboModelClass.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+	    initWidgetValues();
+
 	    return result;
 
 	  }
@@ -54,11 +56,11 @@ public class ComboPropertyDialog extends PropertyDialog{
 	protected void fillProperty(){
 		super.fillProperty();
 		ComboProperty comboProperty = (ComboProperty) this.property;
-		if (checkValid(threadLoading))
-			comboProperty.setThreadLoading(Boolean.getBoolean(threadLoading.getText()));
-		if (checkValid(comboList))
+		if (notEmpty(threadLoading))
+			comboProperty.setThreadLoading(Boolean.parseBoolean(threadLoading.getText()));
+		if (notEmpty(comboList))
 			comboProperty.setComboList(comboList.getText());
-		if (checkValid(comboModelClass))
+		if (notEmpty(comboModelClass))
 			comboProperty.setComboModelClass(comboModelClass.getText());
 	}
 

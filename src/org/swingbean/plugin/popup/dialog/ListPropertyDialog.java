@@ -65,11 +65,15 @@ public class ListPropertyDialog extends PropertyDialog{
 	    label.setText("Min Selected");
 	    minSelected = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    minSelected.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    minSelected.addModifyListener(new IntegerListener());
 
 	    label = new Label(panel, SWT.NONE);
 	    label.setText("Max Selected");
 	    maxSelected = new Text(panel, SWT.SINGLE | SWT.BORDER);
 	    maxSelected.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    maxSelected.addModifyListener(new IntegerListener());
+
+	    initWidgetValues();
 
 	    return result;
 
@@ -79,20 +83,21 @@ public class ListPropertyDialog extends PropertyDialog{
 		super.fillProperty();
 		ListProperty listProperty = (ListProperty) this.property;
 
-		if (checkValid(threadLoading))
-			listProperty.setThreadLoading(Boolean.getBoolean(threadLoading.getText()));
+		if (notEmpty(threadLoading))
+			listProperty.setThreadLoading(Boolean.parseBoolean(threadLoading.getText()));
 		//if (checkValid(list))
 			//listProperty.setList(list.getText());
-		if (checkValid(listModelClass))
+		if (notEmpty(listModelClass))
 			listProperty.setListModelClass(listModelClass.getText());
-		if (checkValid(listModelMethod))
+		if (notEmpty(listModelMethod))
 			listProperty.setListModelMethod(listModelMethod.getText());
-		if (checkValid(parameter))
+		if (notEmpty(parameter))
 			listProperty.setParameter(parameter.getText());
-		if (checkValid(minSelected))
-			listProperty.setMinSelected(Integer.getInteger(minSelected.getText()));
-		if (checkValid(maxSelected))
-			listProperty.setMaxSelected(Integer.getInteger(maxSelected.getText()));
+		if (notEmpty(minSelected))
+			listProperty.setMinSelected(Integer.parseInt(minSelected.getText()));
+		if (notEmpty(maxSelected))
+			listProperty.setMaxSelected(Integer.parseInt(maxSelected.getText()));
 	}
+
 
 }

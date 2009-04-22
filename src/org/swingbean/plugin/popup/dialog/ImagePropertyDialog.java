@@ -40,6 +40,8 @@ public class ImagePropertyDialog extends PropertyDialog{
 	    saveResolution.setItems(booleans);
 	    saveResolution.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+	    initWidgetValues();
+
 	    return result;
 
 	  }
@@ -47,10 +49,10 @@ public class ImagePropertyDialog extends PropertyDialog{
 	protected void fillProperty(){
 		super.fillProperty();
 		ImageProperty imageProperty = (ImageProperty) this.property;
-		if (checkValid(showResolution))
-			imageProperty.setShowResolution(Boolean.getBoolean(showResolution.getText()));
-		if (checkValid(saveResolution))
-			imageProperty.setSaveResolution(Boolean.getBoolean(saveResolution.getText()));
+		if (notEmpty(showResolution))
+			imageProperty.setShowResolution(Boolean.parseBoolean(showResolution.getText()));
+		if (notEmpty(saveResolution))
+			imageProperty.setSaveResolution(Boolean.parseBoolean(saveResolution.getText()));
 	}
 
 }

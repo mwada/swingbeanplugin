@@ -1,10 +1,13 @@
 package org.swingbean.plugin.popup.wizards;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -44,10 +47,10 @@ public class SwingBeanPage extends WizardPage implements Listener {
 		super("Page1");
 		setTitle("SwingBean Descriptor");
 		setDescription("Select the parameters");
-		createCombos(selection);
+		initialize(selection);
 	}
 
-	private void createCombos(ICompilationUnit cu) {
+	private void initialize(ICompilationUnit cu) {
 		try {
 			IType type = null;
 			IType[] allTypes;
@@ -173,6 +176,8 @@ public class SwingBeanPage extends WizardPage implements Listener {
 	 */
 	public void handleEvent(Event event) {
 
+	    Status status = new Status(IStatus.OK, "not_used", 0, "", null);
+
 		int i;
 		for (i=0; i<names.length; i++){
 			if (event.widget == propertyEdit[i]){
@@ -187,10 +192,34 @@ public class SwingBeanPage extends WizardPage implements Listener {
 				break;
 			}else if (event.widget == propertyType[i]){
 				properties[i] = PropertyFactory.getProperty(names[i], PropertyType.fromString(propertyType[i].getText()));
+			}else if (event.widget == propertyLine[i] || event.widget == propertyColumn[i]){
+				if (samePosition()){
+					status = new Status(IStatus.ERROR, "not_used", 0,
+						                "Two parameters cannot be in the same position", null);
+				}
 			}
 		}
 		saveDataToModel();
+	    applyToStatusLine(status);
+		setPageComplete(isPageComplete());
 		getWizard().getContainer().updateButtons();
+	}
+
+	/**
+	 * @see IWizardPage#canFlipToNextPage()
+	 */
+	public boolean canFlipToNextPage() {
+		return false;
+	}
+
+	public boolean isPageComplete(){
+		SwingBeanWizard wizard = (SwingBeanWizard)getWizard();
+		if (getErrorMessage() != null){
+			wizard.setComplete(false);
+			return false;
+		}
+		wizard.setComplete(true);
+		return true;
 	}
 
 
@@ -216,6 +245,43 @@ public class SwingBeanPage extends WizardPage implements Listener {
 		wizard.setDescriptor(descriptor);
 	}
 
+	/**
+	 * Applies the status to the status line of a dialog page.
+	 */
+	private void applyToStatusLine(IStatus status) {
+		String message= status.getMessage();
+		if (message.length() == 0) message= null;
+		switch (status.getSeverity()) {
+			case IStatus.OK:
+				setErrorMessage(null);
+				setMessage(message);
+				break;
+			case IStatus.WARNING:
+				setErrorMessage(null);
+				setMessage(message, WizardPage.WARNING);
+				break;
+			case IStatus.INFO:
+				setErrorMessage(null);
+				setMessage(message, WizardPage.INFORMATION);
+				break;
+			default:
+				setErrorMessage(message);
+				setMessage(null);
+				break;
+		}
+	}
+
+	private boolean samePosition(){
+		for (int i=0; i<names.length-1; i++){
+			for (int j=i+1; j<names.length; j++){
+				if (Integer.parseInt(propertyLine[i].getText()) == Integer.parseInt(propertyLine[j].getText())
+				&& Integer.parseInt(propertyColumn[i].getText()) == Integer.parseInt(propertyColumn[j].getText())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 
 }

@@ -26,9 +26,12 @@ public class SwingBeanWizard extends Wizard implements INewWizard {
 
 	private Descriptor descriptor;
 
+	private boolean complete;
+
 	public SwingBeanWizard() {
 		super();
 		descriptor = new Descriptor();
+		complete = true;
 	}
 
 	public void addPages() {
@@ -44,13 +47,12 @@ public class SwingBeanWizard extends Wizard implements INewWizard {
 	}
 
 	public boolean canFinish() {
-		return true;
+		return complete;
 	}
 
 	public boolean performFinish() {
 		try {
 			createXml();
-			System.out.println("criado");
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -69,6 +71,12 @@ public class SwingBeanWizard extends Wizard implements INewWizard {
 		this.descriptor = descriptor;
 	}
 
+
+	public void setComplete(boolean complete) {
+		this.complete = complete;
+	}
+
+
 	private void createXml() throws JAXBException, IOException, JavaModelException{
 
 		String[] name = selection.getCorrespondingResource().getName().split("\\.");
@@ -76,8 +84,6 @@ public class SwingBeanWizard extends Wizard implements INewWizard {
 		String dir = fileDialog.open();
 
 		String fileName = dir + "/" + name[0] + ".xml";
-
-		System.out.println(fileName);
 
 		// specify a name for the generated XML instance document
         OutputStream os = new FileOutputStream(fileName);
