@@ -24,7 +24,7 @@ public enum PropertyType {
 
 	private static final Map<String, PropertyType> stringToEnum = new HashMap<String, PropertyType>();
 	private static final String[] array = new String[values().length];
-
+	
 	static {
 		int i = 0;
 		for (PropertyType pt : values()) {

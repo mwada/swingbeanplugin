@@ -1,34 +1,30 @@
 package org.swingbean.plugin.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.namespace.QName;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"name", "type"})
 public class Property {
 
 	@XmlAttribute
 	private String name;
 
 	@XmlAttribute
-	private String label;
-
-	@XmlAttribute
 	private PropertyType type;
+	
+	@XmlTransient
+	private Map<String,Object> attributes = new HashMap<String,Object>();
 
-	@XmlAttribute
-	private Integer colspan;
-
-	@XmlAttribute
-	private Integer columnSize;
-
-	@XmlAttribute
-	private Boolean readOnly;
-
-	@XmlAttribute
-	private Boolean mandatory;
+	@XmlAnyAttribute
+	private Map<QName,String> attributesXml = new HashMap<QName,String>();
 
 	public Property(){
 	}
@@ -38,52 +34,35 @@ public class Property {
 		this.type = type;
 	}
 
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
+	public String getName() {
+		return name;
 	}
 
 	public PropertyType getType() {
 		return type;
 	}
 
-	public Integer getColspan() {
-		return colspan;
+	public void setAttribute(String key, Object value){
+		if (attributes.containsKey(key)){
+			removeAttribute(key);
+		}
+		attributes.put(key, value);
+		if (value != null){
+			attributesXml.put(new QName(key), value.toString());
+		}
 	}
 
-	public void setColspan(Integer colspan) {
-		this.colspan = colspan;
+	public Object getAttribute(String key){
+		return attributes.get(key);
 	}
 
-	public Integer getColumnSize() {
-		return columnSize;
+	public Set<String> ketSetAttribute(){
+		return attributes.keySet();
 	}
-
-	public void setColumnSize(Integer columnSize) {
-		this.columnSize = columnSize;
-	}
-
-	public Boolean getReadOnly() {
-		return readOnly;
-	}
-
-	public void setReadOnly(Boolean readOnly) {
-		this.readOnly = readOnly;
-	}
-
-	public Boolean getMandatory() {
-		return mandatory;
-	}
-
-	public void setMandatory(Boolean mandatory) {
-		this.mandatory = mandatory;
-	}
-
-	public String getName() {
-		return name;
+	
+	public Object removeAttribute(String key){
+		attributesXml.remove(new QName(key));
+		return attributes.remove(key);
 	}
 
 }

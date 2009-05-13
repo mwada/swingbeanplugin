@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <beanDescriptor>
     <line>
-        <property formatExample="sdfsdf" colspan="2" type="TEXT" name="nome1"/>
-        <property type="COMBO" name="nome2"/>
+        <property type="BOOLEAN" name="nome1" teste2="sdfsd"/>
     </line>
 </beanDescriptor>

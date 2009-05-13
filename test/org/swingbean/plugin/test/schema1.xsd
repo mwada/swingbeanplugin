@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="beanDescriptor" type="descriptor"/>
+
+  <xs:complexType name="descriptor">
+    <xs:sequence>
+      <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="line">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="property" type="property"/>
+        <xs:element name="property" type="comboProperty"/>
+        <xs:element name="property" type="dependentComboProperty"/>
+        <xs:element name="property" type="imageProperty"/>
+        <xs:element name="property" type="listProperty"/>
+        <xs:element name="property" type="numberProperty"/>
+        <xs:element name="property" type="textProperty"/>
+        <xs:element name="property" type="treeProperty"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="propertyType"/>
+    <xs:attribute name="label" type="xs:string"/>
+    <xs:attribute name="colspan" type="xs:int"/>
+    <xs:attribute name="columnSize" type="xs:int"/>
+    <xs:attribute name="readOnly" type="xs:boolean"/>
+    <xs:attribute name="mandatory" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="comboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="comboModelMethod" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="parameter" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="comboList" type="xs:string"/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="dependentComboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+        <xs:attribute name="dependentProperty" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="showResolution" type="xs:boolean"/>
+        <xs:attribute name="saveResolution" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="list" type="xs:string"/>
+        <xs:attribute name="listModelClass" type="xs:string"/>
+        <xs:attribute name="listModelMethod" type="xs:string"/>
+        <xs:attribute name="parameter" type="xs:string"/>
+        <xs:attribute name="minSelected" type="xs:int"/>
+        <xs:attribute name="maxSelected" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="numberProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="max" type="xs:int"/>
+        <xs:attribute name="min" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="textProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="minSize" type="xs:int"/>
+        <xs:attribute name="pattern" type="xs:string"/>
+        <xs:attribute name="mask" type="xs:string"/>
+        <xs:attribute name="formatExample" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="treeProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="rootName" type="xs:string"/>
+        <xs:attribute name="idProperty" type="xs:string"/>
+        <xs:attribute name="parentProperty" type="xs:string"/>
+        <xs:attribute name="childrenProperty" type="xs:string"/>
+        <xs:attribute name="classifyBy" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="propertyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="LARGE_TEXT"/>
+      <xs:enumeration value="PASSWORD"/>
+      <xs:enumeration value="DATE"/>
+      <xs:enumeration value="BOOLEAN"/>
+      <xs:enumeration value="INTEGER"/>
+      <xs:enumeration value="LONG"/>
+      <xs:enumeration value="FLOAT"/>
+      <xs:enumeration value="DOUBLE"/>
+      <xs:enumeration value="COMBO"/>
+      <xs:enumeration value="DEPENDENT_COMBO"/>
+      <xs:enumeration value="MULTIPLE_LIST"/>
+      <xs:enumeration value="CHECKBOX_LIST"/>
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="COLOR"/>
+      <xs:enumeration value="TREE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="beanDescriptor" type="descriptor"/>
+
+  <xs:complexType name="descriptor">
+    <xs:sequence>
+      <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="line">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="property" type="property"/>
+        <xs:element name="property" type="comboProperty"/>
+        <xs:element name="property" type="dependentComboProperty"/>
+        <xs:element name="property" type="imageProperty"/>
+        <xs:element name="property" type="listProperty"/>
+        <xs:element name="property" type="numberProperty"/>
+        <xs:element name="property" type="textProperty"/>
+        <xs:element name="property" type="treeProperty"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="propertyType"/>
+    <xs:attribute name="label" type="xs:string"/>
+    <xs:attribute name="colspan" type="xs:int"/>
+    <xs:attribute name="columnSize" type="xs:int"/>
+    <xs:attribute name="readOnly" type="xs:boolean"/>
+    <xs:attribute name="mandatory" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="comboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="comboModelMethod" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="parameter" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="comboList" type="xs:string"/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="dependentComboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+        <xs:attribute name="dependentProperty" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="showResolution" type="xs:boolean"/>
+        <xs:attribute name="saveResolution" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="list" type="xs:string"/>
+        <xs:attribute name="listModelClass" type="xs:string"/>
+        <xs:attribute name="listModelMethod" type="xs:string"/>
+        <xs:attribute name="parameter" type="xs:string"/>
+        <xs:attribute name="minSelected" type="xs:int"/>
+        <xs:attribute name="maxSelected" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="numberProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="max" type="xs:int"/>
+        <xs:attribute name="min" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="textProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="minSize" type="xs:int"/>
+        <xs:attribute name="pattern" type="xs:string"/>
+        <xs:attribute name="mask" type="xs:string"/>
+        <xs:attribute name="formatExample" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="treeProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="rootName" type="xs:string"/>
+        <xs:attribute name="idProperty" type="xs:string"/>
+        <xs:attribute name="parentProperty" type="xs:string"/>
+        <xs:attribute name="childrenProperty" type="xs:string"/>
+        <xs:attribute name="classifyBy" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="propertyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="LARGE_TEXT"/>
+      <xs:enumeration value="PASSWORD"/>
+      <xs:enumeration value="DATE"/>
+      <xs:enumeration value="BOOLEAN"/>
+      <xs:enumeration value="INTEGER"/>
+      <xs:enumeration value="LONG"/>
+      <xs:enumeration value="FLOAT"/>
+      <xs:enumeration value="DOUBLE"/>
+      <xs:enumeration value="COMBO"/>
+      <xs:enumeration value="DEPENDENT_COMBO"/>
+      <xs:enumeration value="MULTIPLE_LIST"/>
+      <xs:enumeration value="CHECKBOX_LIST"/>
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="COLOR"/>
+      <xs:enumeration value="TREE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="beanDescriptor" type="descriptor"/>
+
+  <xs:complexType name="descriptor">
+    <xs:sequence>
+      <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="line">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="property" type="property"/>
+        <xs:element name="property" type="comboProperty"/>
+        <xs:element name="property" type="dependentComboProperty"/>
+        <xs:element name="property" type="imageProperty"/>
+        <xs:element name="property" type="listProperty"/>
+        <xs:element name="property" type="numberProperty"/>
+        <xs:element name="property" type="textProperty"/>
+        <xs:element name="property" type="treeProperty"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="propertyType"/>
+    <xs:attribute name="label" type="xs:string"/>
+    <xs:attribute name="colspan" type="xs:int"/>
+    <xs:attribute name="columnSize" type="xs:int"/>
+    <xs:attribute name="readOnly" type="xs:boolean"/>
+    <xs:attribute name="mandatory" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="comboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="comboModelMethod" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="parameter" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="comboList" type="xs:string"/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="dependentComboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+        <xs:attribute name="dependentProperty" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="showResolution" type="xs:boolean"/>
+        <xs:attribute name="saveResolution" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="list" type="xs:string"/>
+        <xs:attribute name="listModelClass" type="xs:string"/>
+        <xs:attribute name="listModelMethod" type="xs:string"/>
+        <xs:attribute name="parameter" type="xs:string"/>
+        <xs:attribute name="minSelected" type="xs:int"/>
+        <xs:attribute name="maxSelected" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="numberProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="max" type="xs:int"/>
+        <xs:attribute name="min" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="textProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="minSize" type="xs:int"/>
+        <xs:attribute name="pattern" type="xs:string"/>
+        <xs:attribute name="mask" type="xs:string"/>
+        <xs:attribute name="formatExample" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="treeProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="rootName" type="xs:string"/>
+        <xs:attribute name="idProperty" type="xs:string"/>
+        <xs:attribute name="parentProperty" type="xs:string"/>
+        <xs:attribute name="childrenProperty" type="xs:string"/>
+        <xs:attribute name="classifyBy" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="propertyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="LARGE_TEXT"/>
+      <xs:enumeration value="PASSWORD"/>
+      <xs:enumeration value="DATE"/>
+      <xs:enumeration value="BOOLEAN"/>
+      <xs:enumeration value="INTEGER"/>
+      <xs:enumeration value="LONG"/>
+      <xs:enumeration value="FLOAT"/>
+      <xs:enumeration value="DOUBLE"/>
+      <xs:enumeration value="COMBO"/>
+      <xs:enumeration value="DEPENDENT_COMBO"/>
+      <xs:enumeration value="MULTIPLE_LIST"/>
+      <xs:enumeration value="CHECKBOX_LIST"/>
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="COLOR"/>
+      <xs:enumeration value="TREE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="beanDescriptor" type="descriptor"/>
+
+  <xs:complexType name="descriptor">
+    <xs:sequence>
+      <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="line">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="property" type="property"/>
+        <xs:element name="property" type="comboProperty"/>
+        <xs:element name="property" type="dependentComboProperty"/>
+        <xs:element name="property" type="imageProperty"/>
+        <xs:element name="property" type="listProperty"/>
+        <xs:element name="property" type="numberProperty"/>
+        <xs:element name="property" type="textProperty"/>
+        <xs:element name="property" type="treeProperty"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="propertyType"/>
+    <xs:attribute name="label" type="xs:string"/>
+    <xs:attribute name="colspan" type="xs:int"/>
+    <xs:attribute name="columnSize" type="xs:int"/>
+    <xs:attribute name="readOnly" type="xs:boolean"/>
+    <xs:attribute name="mandatory" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="comboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="comboModelMethod" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="parameter" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="comboList" type="xs:string"/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="dependentComboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+        <xs:attribute name="dependentProperty" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="showResolution" type="xs:boolean"/>
+        <xs:attribute name="saveResolution" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="list" type="xs:string"/>
+        <xs:attribute name="listModelClass" type="xs:string"/>
+        <xs:attribute name="listModelMethod" type="xs:string"/>
+        <xs:attribute name="parameter" type="xs:string"/>
+        <xs:attribute name="minSelected" type="xs:int"/>
+        <xs:attribute name="maxSelected" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="numberProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="max" type="xs:int"/>
+        <xs:attribute name="min" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="textProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="minSize" type="xs:int"/>
+        <xs:attribute name="pattern" type="xs:string"/>
+        <xs:attribute name="mask" type="xs:string"/>
+        <xs:attribute name="formatExample" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="treeProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="rootName" type="xs:string"/>
+        <xs:attribute name="idProperty" type="xs:string"/>
+        <xs:attribute name="parentProperty" type="xs:string"/>
+        <xs:attribute name="childrenProperty" type="xs:string"/>
+        <xs:attribute name="classifyBy" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="propertyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="LARGE_TEXT"/>
+      <xs:enumeration value="PASSWORD"/>
+      <xs:enumeration value="DATE"/>
+      <xs:enumeration value="BOOLEAN"/>
+      <xs:enumeration value="INTEGER"/>
+      <xs:enumeration value="LONG"/>
+      <xs:enumeration value="FLOAT"/>
+      <xs:enumeration value="DOUBLE"/>
+      <xs:enumeration value="COMBO"/>
+      <xs:enumeration value="DEPENDENT_COMBO"/>
+      <xs:enumeration value="MULTIPLE_LIST"/>
+      <xs:enumeration value="CHECKBOX_LIST"/>
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="COLOR"/>
+      <xs:enumeration value="TREE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="beanDescriptor" type="descriptor"/>
+
+  <xs:complexType name="descriptor">
+    <xs:sequence>
+      <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="line">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="property" type="property"/>
+        <xs:element name="property" type="comboProperty"/>
+        <xs:element name="property" type="dependentComboProperty"/>
+        <xs:element name="property" type="imageProperty"/>
+        <xs:element name="property" type="listProperty"/>
+        <xs:element name="property" type="numberProperty"/>
+        <xs:element name="property" type="textProperty"/>
+        <xs:element name="property" type="treeProperty"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="propertyType"/>
+    <xs:attribute name="label" type="xs:string"/>
+    <xs:attribute name="colspan" type="xs:int"/>
+    <xs:attribute name="columnSize" type="xs:int"/>
+    <xs:attribute name="readOnly" type="xs:boolean"/>
+    <xs:attribute name="mandatory" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="comboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="comboModelMethod" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="parameter" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="comboList" type="xs:string"/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="dependentComboProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="comboModelClass" type="xs:string"/>
+        <xs:attribute name="dependentProperty" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="showResolution" type="xs:boolean"/>
+        <xs:attribute name="saveResolution" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="threadLoading" type="xs:boolean"/>
+        <xs:attribute name="list" type="xs:string"/>
+        <xs:attribute name="listModelClass" type="xs:string"/>
+        <xs:attribute name="listModelMethod" type="xs:string"/>
+        <xs:attribute name="parameter" type="xs:string"/>
+        <xs:attribute name="minSelected" type="xs:int"/>
+        <xs:attribute name="maxSelected" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="numberProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="max" type="xs:int"/>
+        <xs:attribute name="min" type="xs:int"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="textProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="minSize" type="xs:int"/>
+        <xs:attribute name="pattern" type="xs:string"/>
+        <xs:attribute name="mask" type="xs:string"/>
+        <xs:attribute name="formatExample" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="treeProperty">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence/>
+        <xs:attribute name="rootName" type="xs:string"/>
+        <xs:attribute name="idProperty" type="xs:string"/>
+        <xs:attribute name="parentProperty" type="xs:string"/>
+        <xs:attribute name="childrenProperty" type="xs:string"/>
+        <xs:attribute name="classifyBy" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="propertyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="LARGE_TEXT"/>
+      <xs:enumeration value="PASSWORD"/>
+      <xs:enumeration value="DATE"/>
+      <xs:enumeration value="BOOLEAN"/>
+      <xs:enumeration value="INTEGER"/>
+      <xs:enumeration value="LONG"/>
+      <xs:enumeration value="FLOAT"/>
+      <xs:enumeration value="DOUBLE"/>
+      <xs:enumeration value="COMBO"/>
+      <xs:enumeration value="DEPENDENT_COMBO"/>
+      <xs:enumeration value="MULTIPLE_LIST"/>
+      <xs:enumeration value="CHECKBOX_LIST"/>
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="COLOR"/>
+      <xs:enumeration value="TREE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

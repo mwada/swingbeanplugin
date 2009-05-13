@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="asm-all-3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="classmock_1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="activation.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb-impl.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb-xjc.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb1-impl.jar"/>
 	<classpathentry exported="true" kind="lib" path="jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="asm-attrs.jar"/>
+	<classpathentry kind="lib" path="asm-util.jar"/>
+	<classpathentry kind="lib" path="asm.jar"/>
+	<classpathentry kind="lib" path="cglib-2.1_3.jar"/>
+	<classpathentry kind="lib" path="forms-1.0.5.jar"/>
+	<classpathentry kind="lib" path="jcalendar.jar"/>
+	<classpathentry kind="lib" path="swingbean.jar"/>
+	<classpathentry kind="lib" path="validation-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>

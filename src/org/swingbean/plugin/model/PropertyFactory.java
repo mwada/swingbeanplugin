@@ -1,43 +1,75 @@
 package org.swingbean.plugin.model;
 
 public class PropertyFactory {
-
+	
 	public static Property getProperty(String name, PropertyType type){
-		switch(type){
+		Property property = new Property(name, type);
+		property.setAttribute("label", null);
+		property.setAttribute("colspan", null);
+		property.setAttribute("columnSize", null);
+		property.setAttribute("readOnly", null);
+		property.setAttribute("mandatory", null);
+
+		switch(property.getType()){
 		case TEXT:
 		case LARGE_TEXT:
 		case PASSWORD:
-			return new TextProperty(name, type);
-
+			property.setAttribute("size", null);
+			property.setAttribute("minSize", null);
+			property.setAttribute("pattern", null);
+			property.setAttribute("mask", null);
+			property.setAttribute("formatExample", null);
+			break;
+			
 		case COMBO:
-			return new ComboProperty(name, type);
+			property.setAttribute("threadLoading", null);
+			property.setAttribute("comboList", null);
+			property.setAttribute("comboModelClass", null);
+			break;
 
 		case DEPENDENT_COMBO:
-			return new DependentComboProperty(name, type);
+			property.setAttribute("comboModelClass", null);
+			property.setAttribute("dependentProperty", null);
+			break;
 
 		case IMAGE:
-			return new ImageProperty(name, type);
+			property.setAttribute("showResolution", null);
+			property.setAttribute("saveResolution", null);
+			break;
 
 		case INTEGER:
 		case LONG:
 		case FLOAT:
 		case DOUBLE:
-			return new NumberProperty(name, type);
+			property.setAttribute("max", null);
+			property.setAttribute("min", null);
+			break;
 
 		case MULTIPLE_LIST:
 		case CHECKBOX_LIST:
-			return new ListProperty(name, type);
+			property.setAttribute("threadLoading", null);
+			property.setAttribute("list", null);
+			property.setAttribute("listModelClass", null);
+			property.setAttribute("listModelMethod", null);
+			property.setAttribute("parameter", null);
+			property.setAttribute("minSelected", null);
+			property.setAttribute("maxSelected", null);
+			break;
 
 		case TREE:
-			return new TreeProperty(name, type);
+			property.setAttribute("rootName", null);
+			property.setAttribute("idProperty", null);
+			property.setAttribute("parentProperty", null);
+			property.setAttribute("childrenProperty", null);
+			property.setAttribute("classifyBy", null);
+			break;
 
 		case DATE:
 		case BOOLEAN:
 		case COLOR:
 		default:
 	}
-	return new Property(name, type);
-
+		return property;
 	}
 
 }

@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -27,7 +27,7 @@ import org.swingbean.plugin.model.Property;
 import org.swingbean.plugin.model.PropertyFactory;
 import org.swingbean.plugin.model.PropertyType;
 import org.swingbean.plugin.popup.dialog.PropertyDialog;
-import org.swingbean.plugin.popup.dialog.PropertyDialogFactory;
+import org.swingbean.plugin.util.TypeUtil;
 
 public class SwingBeanPage extends WizardPage implements Listener {
 
@@ -37,11 +37,11 @@ public class SwingBeanPage extends WizardPage implements Listener {
 	CCombo[] propertyLine;
 	CCombo[] propertyColumn;
 	Button[] propertyEdit;
-
 	Property[] properties;
 
 	String[] names;
 	String[] lines;
+	String[] classes;
 
 	public SwingBeanPage(ICompilationUnit selection) {
 		super("Page1");
@@ -66,7 +66,8 @@ public class SwingBeanPage extends WizardPage implements Listener {
 			IField[] fields = type.getFields();
 			names = new String[fields.length];
 			lines = new String[fields.length];
-
+			classes = new String[fields.length];
+			
 			propertyType = new CCombo[fields.length];
 			propertyLine = new CCombo[fields.length];
 			propertyColumn = new CCombo[fields.length];
@@ -75,9 +76,10 @@ public class SwingBeanPage extends WizardPage implements Listener {
 			for (int i=0; i<fields.length; i++) {
 				names[i] = fields[i].getElementName();
 				lines[i] = Integer.toString(i+1);
-		        properties[i] = PropertyFactory.getProperty(names[i], PropertyType.TEXT);
+				classes[i] = Signature.getSignatureSimpleName(fields[i].getTypeSignature());
+		        properties[i] = PropertyFactory.getProperty(names[i], TypeUtil.getDefaultType(classes[i]));
 			}
-		} catch (JavaModelException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -121,7 +123,7 @@ public class SwingBeanPage extends WizardPage implements Listener {
 	        TableEditor editor = new TableEditor(table);
 	        propertyType[i] = new CCombo(table, SWT.BORDER | SWT.READ_ONLY);
 	        propertyType[i].setItems(PropertyType.getStringArray());
-			propertyType[i].setText(PropertyType.TEXT.name());
+			propertyType[i].setText(TypeUtil.getDefaultType(classes[i]).name());
 	        editor.grabHorizontal = true;
 	        editor.setEditor(propertyType[i], item, 1);
 
@@ -140,12 +142,12 @@ public class SwingBeanPage extends WizardPage implements Listener {
 	        editor.setEditor(propertyColumn[i], item, 3);
 
 	        editor = new TableEditor(table);
-	        propertyEdit[i] = new Button(table, SWT.PUSH);
+	        propertyEdit[i] = new Button(table, SWT.TOGGLE);
 	        propertyEdit[i].setText("Edit...");
-	        propertyEdit[i].computeSize(SWT.DEFAULT, table.getItemHeight()-20);
 	        editor.grabHorizontal = true;
 	        editor.minimumHeight = propertyEdit[i].getSize().y;
 	        editor.minimumWidth = propertyEdit[i].getSize().x;
+	        propertyEdit[i].pack();
 	        editor.setEditor(propertyEdit[i], item, 4);
 	    }
 
@@ -182,8 +184,12 @@ public class SwingBeanPage extends WizardPage implements Listener {
 		for (i=0; i<names.length; i++){
 			if (event.widget == propertyEdit[i]){
 				if (i<propertyEdit.length){
-					 PropertyDialog dialog = PropertyDialogFactory.getDialog(getShell(), properties[i]);
-					 int reply = dialog.open();
+					 PropertyDialog dialog = new PropertyDialog(getShell(), properties[i]);
+					 int reply;
+					 do{
+						 reply = dialog.open();
+					 } while(dialog.isRefresh() && reply == PropertyDialog.OK);
+						 
 					 if (reply == PropertyDialog.OK) {
 					     table.redraw();
 					     properties[i] = dialog.getProperty();
@@ -282,7 +288,6 @@ public class SwingBeanPage extends WizardPage implements Listener {
 		}
 		return false;
 	}
-
 
 }
 

@@ -1,36 +1,46 @@
 package org.swingbean.plugin.popup.dialog;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.swingbean.plugin.model.Property;
 
 public class PropertyDialog extends Dialog {
 
+	protected Table table;
+	
 	protected Property property;
+	
+	protected Map<String,Text> fields = new TreeMap<String, Text>();
+	
+	protected boolean refresh = false;
+	
+	public boolean isRefresh(){
+		return refresh;
+	}
 
-	protected Text textLabel;
-	protected Text colspan;
-	protected Text columnSize;
-	protected Combo readOnly;
-	protected Combo mandatory;
-
-	final static String[] booleans = {"true", "false"};
-
+	
 	protected PropertyDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
-	protected PropertyDialog(Shell parentShell, Property property) {
+	public PropertyDialog(Shell parentShell, Property property) {
 		this(parentShell);
 		this.property = property;
 	}
@@ -50,62 +60,61 @@ public class PropertyDialog extends Dialog {
 	protected void cancelPressed() {
 		super.cancelPressed();
 	}
-
+	
+	public int open(){
+		refresh = false;
+		return super.open();
+	}
+	
 	/**
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(Composite)
 	 */
-	protected Control createDialogArea(Composite parent)
-	{
-		Composite result = (Composite)super.createDialogArea(parent);
-		Composite panel = new Composite(result, SWT.NONE);
-		panel.setLayout(new GridLayout(2, false));
-		panel.setLayoutData(new GridData(GridData.FILL_BOTH));
+	protected Control createDialogArea(Composite parent) {
+		
+	    // create the composite to hold the widgets
+		Composite composite =  new Composite(parent, SWT.NULL);
+		
+	    // create the desired layout for this wizard page
+		GridLayout gl = new GridLayout();
+		int ncol = 3;
+		gl.numColumns = ncol;
+		composite.setLayout(gl);
 
-		Label label = new Label(panel, SWT.NONE);
-		label.setText("Name");
-		Text textName = new Text(panel, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
-		textName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		textName.setText(property.getName());
+		// create table
+		table = new Table(composite, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+		GridData gd = new GridData(GridData.FILL_BOTH);
+	    gd.horizontalSpan = ncol;
+	    table.setLayoutData(gd);
+	    table.setHeaderVisible(true);
+	    table.setLinesVisible(true);
+	    
+	    String[] titles = {"Property       ", "Value           ", "         "};
 
-		label = new Label(panel, SWT.NONE);
-		label.setText("Type");
-		Text textType = new Text(panel, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
-		textType.setText(property.getType().name());
-		textType.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    for (String title: titles) {
+	    	TableColumn column = new TableColumn(table, SWT.CENTER);
+	    	column.setText(title);
+	    	column.setWidth(100);
+	    }
 
-		label = new Label(panel, SWT.NONE);
-		label.setText("Label");
-		textLabel = new Text(panel, SWT.SINGLE | SWT.BORDER);
-		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        createField("name", property.getName());
+        createField("type", property.getType().name());
+        
+        for (String key: property.ketSetAttribute()){
+        	createField(key);
+        }
 
-		label = new Label(panel, SWT.NONE);
-		label.setText("Colspan");
-		colspan = new Text(panel, SWT.SINGLE | SWT.BORDER);
-		colspan.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		colspan.addModifyListener(new IntegerListener());
-
-		label = new Label(panel, SWT.NONE);
-		label.setText("ColumnSize");
-		columnSize = new Text(panel, SWT.SINGLE | SWT.BORDER);
-		columnSize.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		columnSize.addModifyListener(new IntegerListener());
-
-
-		label = new Label(panel, SWT.NONE);
-		label.setText("ReadOnly");
-		readOnly = new Combo(panel, SWT.BORDER | SWT.READ_ONLY);
-		readOnly.setItems(booleans);
-		readOnly.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		label = new Label(panel, SWT.NONE);
-		label.setText("Mandatory");
-		mandatory = new Combo(panel, SWT.BORDER | SWT.READ_ONLY);
-		mandatory.setItems(booleans);
-		mandatory.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Button button = new Button(composite, SWT.PUSH);
+		button.setText("Add Attribute...");
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = ncol;
+		button.setLayoutData(gd);
+		button.addSelectionListener(new AddListener());
 
 		initWidgetValues();
+		
+		
 
-		return result;
+		return composite;
 
 	}
 
@@ -131,29 +140,19 @@ public class PropertyDialog extends Dialog {
 	}
 
 	protected void initWidgetValues() {
-		if (notEmpty(property.getLabel()))
-			textLabel.setText(property.getLabel());
-		if (notEmpty(property.getColspan()))
-			colspan.setText(property.getColspan().toString());
-		if (notEmpty(property.getColumnSize()))
-			columnSize.setText(property.getColumnSize().toString());
-		if (notEmpty(property.getReadOnly()))
-			readOnly.setText(property.getReadOnly().toString());
-		if (notEmpty(property.getMandatory()))
-			mandatory.setText(property.getMandatory().toString());
+		for (String key: property.ketSetAttribute()){
+        	if (property.getAttribute(key) != null){
+    			fields.get(key).setText(property.getAttribute(key).toString());
+        	}        
+        }
 	}
 
 	protected void fillProperty(){
-		if (notEmpty(textLabel))
-			property.setLabel(textLabel.getText());
-		if (notEmpty(colspan))
-			property.setColspan(Integer.parseInt(colspan.getText()));
-		if (notEmpty(columnSize))
-			property.setColumnSize(Integer.parseInt(columnSize.getText()));
-		if (notEmpty(readOnly))
-			property.setReadOnly(Boolean.parseBoolean(readOnly.getText()));
-		if (notEmpty(mandatory))
-			property.setMandatory(Boolean.parseBoolean(mandatory.getText()));
+		for (String key: fields.keySet()){
+        	if (notEmpty(fields.get(key))){
+    			property.setAttribute(key, fields.get(key).getText());
+        	}        
+        }
 	}
 
 	protected boolean notEmpty(Text text){
@@ -176,16 +175,77 @@ public class PropertyDialog extends Dialog {
 		return b!=null;
 	}
 
-	class IntegerListener implements ModifyListener {
-		public void modifyText(ModifyEvent e) {
-			Text text = (Text) e.getSource();
-			try{
-				if (!"".equals(text.getText()))
-				Integer.parseInt(text.getText());
-			}catch(Exception ex){
-				text.setText("");
-			}
+	protected void createField(String fieldName){
+		createField(fieldName, null);
+	}
+
+	protected void createField(String fieldName, String value){
+	    TableItem item = new TableItem(table, SWT.NULL);
+        item.setText(0, fieldName);
+
+        TableEditor editor = new TableEditor(table);
+        Text fieldText = null;
+        if (value != null){
+        	fieldText = new Text(table, SWT.NONE | SWT.READ_ONLY);
+        	fieldText.setText(value);
+            editor.grabHorizontal = true;
+            editor.setEditor(fieldText, item, 1);
+        }else{
+        	fieldText = new Text(table, SWT.NONE);
+            fields.put(fieldName, fieldText);
+            editor.grabHorizontal = true;
+            editor.setEditor(fieldText, item, 1);
+
+            editor = new TableEditor(table);
+            Button button = new Button(table, SWT.TOGGLE);
+            button.setText("Delete");
+            editor.grabHorizontal = true;
+            editor.minimumHeight = button.getSize().y;
+            editor.minimumWidth = button.getSize().x;
+            button.pack();
+            editor.setEditor(button, item, 2);
+    		button.addSelectionListener(new RemoveListener(fieldName));
+        }
+        
+
+	}
+	
+	class RemoveListener implements SelectionListener{
+
+		private String field;
+		public RemoveListener(String field){
+			this.field = field;
+		}
+
+		public void widgetDefaultSelected(SelectionEvent arg0) {
+			widgetSelected(arg0);
+		}
+
+		public void widgetSelected(SelectionEvent arg0) {
+			property.removeAttribute(field);
+			fields.remove(field);
+		    refresh = true;
+		    okPressed();
+		}
+		
+	}
+
+	class AddListener implements SelectionListener{
+
+		public void widgetDefaultSelected(SelectionEvent arg0) {
+			widgetSelected(arg0);
+		}
+
+		public void widgetSelected(SelectionEvent arg0) {
+			AttributeDialog dialog = new AttributeDialog(getShell(), property);
+			 int reply = dialog.open();
+			 if (reply == AttributeDialog.OK) {
+			     property = dialog.getProperty();
+			     refresh = true;
+			     okPressed();
+			 }
 		}
 	}
+
 
 }
